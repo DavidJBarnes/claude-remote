@@ -32,14 +32,6 @@ FastAPI serves the compiled frontend as static files — no separate web server 
 
 Stops and removes the systemd user service. Leaves the project directory and any live tmux sessions untouched — list them with `tmux ls`.
 
-## Access
-
-```
-http://3090.zero:8765
-http://2070.zero:8765
-http://dns.zero:8765
-```
-
 Enter your token at the login screen. Token is stored in `localStorage` — you won't be asked again on the same device.
 
 > If you re-deploy with a different token, clear the stale one in devtools first:
