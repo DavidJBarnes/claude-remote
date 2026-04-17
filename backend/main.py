@@ -18,8 +18,7 @@ from pathlib import Path
 from typing import Optional
 
 import ptyprocess
-from fastapi import Depends, FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -29,23 +28,24 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 logger = logging.getLogger(__name__)
 
 AUTH_TOKEN: str = os.environ.get("CLAUDE_REMOTE_TOKEN", "changeme")
+if AUTH_TOKEN == "changeme":
+    logger.warning(
+        "\n  *** CLAUDE_REMOTE_TOKEN is 'changeme' — the default value ***"
+        "\n  *** Set a strong, unique token before exposing this service ***"
+    )
 HOSTNAME: str = socket.gethostname()
 
 session_manager = SessionManager()
 
 app = FastAPI(title="claude-remote")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 
 # ── auth ──────────────────────────────────────────────────────────────────────
 
-def check_token(token: str = Query(...)) -> str:
+def check_token(authorization: Optional[str] = Header(None)) -> str:
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    token = authorization.removeprefix("Bearer ")
     if not secrets.compare_digest(token, AUTH_TOKEN):
         raise HTTPException(status_code=403, detail="Forbidden")
     return token

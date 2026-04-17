@@ -1,5 +1,6 @@
 """tmux session lifecycle management."""
 import logging
+import os
 import subprocess
 import uuid
 from dataclasses import dataclass
@@ -26,12 +27,7 @@ class SessionManager:
         session_id = uuid.uuid4().hex[:8]
         tmux_name = name if name else f"cr-{session_id}"
 
-        # Expand ~ so tmux gets an absolute path
-        expanded = subprocess.run(
-            ["bash", "-c", f"echo {cwd}"],
-            capture_output=True,
-            text=True,
-        ).stdout.strip() or cwd
+        expanded = os.path.expanduser(cwd)
 
         subprocess.run(
             ["tmux", "new-session", "-d", "-s", tmux_name, "-c", expanded],
