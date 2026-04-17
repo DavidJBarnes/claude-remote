@@ -1,13 +1,7 @@
 /**
- * Builds a URL with the auth token as a query param.
- * All API paths are relative so the app works regardless of host.
- */
-export function apiUrl(path, token) {
-  return `${path}?token=${encodeURIComponent(token)}`
-}
-
-/**
  * Builds a WebSocket URL from the current page origin.
+ * Token stays in the query string here — browser WebSocket API
+ * does not support custom headers.
  */
 export function wsUrl(path, token) {
   const proto = window.location.protocol === 'https:' ? 'wss' : 'ws'
@@ -16,10 +10,17 @@ export function wsUrl(path, token) {
 }
 
 /**
- * Authenticated fetch wrapper — throws on non-2xx.
+ * Authenticated fetch wrapper — sends token via Authorization header.
+ * Throws on non-2xx.
  */
 export async function apiFetch(path, token, options = {}) {
-  const res = await fetch(apiUrl(path, token), options)
+  const res = await fetch(path, {
+    ...options,
+    headers: {
+      ...options.headers,
+      'Authorization': `Bearer ${token}`,
+    },
+  })
   if (!res.ok) {
     const text = await res.text().catch(() => '')
     throw new Error(`HTTP ${res.status}: ${text}`)
