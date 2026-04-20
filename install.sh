@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# deploy.sh — install, build, and install systemd service for claude-remote
+# install.sh — install deps, build frontend, install systemd user service.
 # Run as the user who owns the project (not root).
-# Usage:  CLAUDE_REMOTE_TOKEN=mysecret ./deploy.sh
+# Usage:  CLAUDE_REMOTE_TOKEN=mysecret ./install.sh
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -11,7 +11,7 @@ SERVICE_NAME="claude-remote"
 PORT="${CLAUDE_REMOTE_PORT:-8765}"
 TOKEN="${CLAUDE_REMOTE_TOKEN:-changeme}"
 
-echo "==> claude-remote deploy"
+echo "==> claude-remote install"
 echo "    dir:   $SCRIPT_DIR"
 echo "    port:  $PORT"
 echo ""

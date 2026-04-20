@@ -10,11 +10,11 @@ Browser (xterm.js)  ←──WebSocket──→  FastAPI  ←──PTY──→ 
 
 Sessions survive WebSocket disconnects — tmux keeps them alive. Reconnect from any device and pick up where you left off.
 
-## Deploy
+## Install
 
 ```bash
 # On each node you want to access remotely:
-CLAUDE_REMOTE_TOKEN=your-secret-token ./deploy.sh
+CLAUDE_REMOTE_TOKEN=your-secret-token ./install.sh
 ```
 
 This:
@@ -30,11 +30,11 @@ FastAPI serves the compiled frontend as static files — no separate web server 
 ./uninstall.sh
 ```
 
-Stops and removes the systemd user service. Leaves the project directory and any live tmux sessions untouched — list them with `tmux ls`.
+Removes the systemd user service, kills tmux sessions created by the app (`cr-<hex>`), and deletes build artifacts (`backend/.venv`, `frontend/dist`, `frontend/node_modules`). A subsequent `./install.sh` starts fresh. Source tree and custom-named tmux sessions are preserved.
 
 Enter your token at the login screen. Token is stored in `localStorage` — you won't be asked again on the same device.
 
-> If you re-deploy with a different token, clear the stale one in devtools first:
+> If you re-install with a different token, clear the stale one in devtools first:
 > `localStorage.removeItem('cr_token')` — otherwise you'll see "invalid token".
 
 ## Development
