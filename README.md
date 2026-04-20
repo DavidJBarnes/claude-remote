@@ -14,7 +14,8 @@ Sessions survive WebSocket disconnects — tmux keeps them alive. Reconnect from
 
 ```bash
 # On each node you want to access remotely:
-CLAUDE_REMOTE_TOKEN=your-secret-token ./install.sh
+./install.sh                                     # prompts for token
+CLAUDE_REMOTE_TOKEN=your-secret-token ./install.sh   # or set it inline
 ```
 
 This:

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # install.sh — install deps, build frontend, install systemd user service.
 # Run as the user who owns the project (not root).
-# Usage:  CLAUDE_REMOTE_TOKEN=mysecret ./install.sh
+# Usage:
+#   ./install.sh                              # prompts for token
+#   CLAUDE_REMOTE_TOKEN=mysecret ./install.sh # non-interactive
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -9,7 +11,21 @@ BACKEND_DIR="$SCRIPT_DIR/backend"
 FRONTEND_DIR="$SCRIPT_DIR/frontend"
 SERVICE_NAME="claude-remote"
 PORT="${CLAUDE_REMOTE_PORT:-8765}"
-TOKEN="${CLAUDE_REMOTE_TOKEN:-changeme}"
+
+# Token: use env var if set, otherwise prompt (hidden). Error if neither.
+if [[ -n "${CLAUDE_REMOTE_TOKEN:-}" ]]; then
+  TOKEN="$CLAUDE_REMOTE_TOKEN"
+elif [[ -t 0 ]]; then
+  read -r -s -p "Access token: " TOKEN
+  echo
+  if [[ -z "$TOKEN" ]]; then
+    echo "error: token cannot be empty" >&2
+    exit 1
+  fi
+else
+  echo "error: set CLAUDE_REMOTE_TOKEN or run interactively" >&2
+  exit 1
+fi
 
 echo "==> claude-remote install"
 echo "    dir:   $SCRIPT_DIR"
