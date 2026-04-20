@@ -200,6 +200,43 @@
   color: #5A7080;
 }
 
+.cwd-wrap {
+  position: relative;
+}
+
+.cwd-suggestions {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #0D1117;
+  border: 1px solid #2A3D55;
+  border-radius: 3px;
+  list-style: none;
+  margin: 0;
+  padding: 2px;
+  font-size: 12px;
+  z-index: 10;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.cwd-suggestions li {
+  padding: 5px 8px;
+  color: #C0D4E8;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cwd-suggestions li.active {
+  background: #182030;
+  color: #F0A030;
+}
+
 .form-actions {
   display: flex;
   gap: 5px;

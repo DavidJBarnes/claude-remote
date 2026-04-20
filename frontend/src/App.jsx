@@ -53,16 +53,61 @@ function LoginGate({ onAuth }) {
 
 // ── New session form ──────────────────────────────────────────────────────────
 
-function NewSessionForm({ onSubmit, onCancel }) {
-  const [name, setName] = useState('')
-  const [cwd, setCwd]   = useState('~')
+function NewSessionForm({ onSubmit, onCancel, token }) {
+  const [name, setName]       = useState('')
+  const [cwd, setCwd]         = useState('~/')
+  const [matches, setMatches] = useState([])
+  const [sel, setSel]         = useState(0)
+  const [open, setOpen]       = useState(false)
   const nameRef = useRef(null)
+  const listRef = useRef(null)
 
   useEffect(() => nameRef.current?.focus(), [])
+
+  // Fetch completions (debounced) whenever cwd changes while dropdown is open.
+  useEffect(() => {
+    if (!open) return
+    const id = setTimeout(() => {
+      apiFetch(`/api/fs/complete?prefix=${encodeURIComponent(cwd)}`, token)
+        .then(r => { setMatches(r.matches || []); setSel(0) })
+        .catch(() => setMatches([]))
+    }, 80)
+    return () => clearTimeout(id)
+  }, [cwd, open, token])
+
+  // Keep highlighted suggestion scrolled into view.
+  useEffect(() => {
+    const el = listRef.current?.children[sel]
+    el?.scrollIntoView({ block: 'nearest' })
+  }, [sel])
 
   const submit = () => {
     if (!cwd.trim()) return
     onSubmit({ name: name.trim() || undefined, cwd: cwd.trim() })
+  }
+
+  const accept = (m) => setCwd(m)
+
+  const onCwdKey = (e) => {
+    if (!open || matches.length === 0) {
+      if (e.key === 'Enter') submit()
+      else if (e.key === 'Escape') onCancel()
+      return
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setSel(i => (i + 1) % matches.length)
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setSel(i => (i - 1 + matches.length) % matches.length)
+    } else if (e.key === 'Tab') {
+      e.preventDefault()
+      accept(matches[sel])
+    } else if (e.key === 'Enter') {
+      submit()
+    } else if (e.key === 'Escape') {
+      setOpen(false)
+    }
   }
 
   return (
@@ -75,13 +120,33 @@ function NewSessionForm({ onSubmit, onCancel }) {
         onChange={e => setName(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && submit()}
       />
-      <input
-        className="form-input"
-        placeholder="cwd"
-        value={cwd}
-        onChange={e => setCwd(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && submit()}
-      />
+      <div className="cwd-wrap">
+        <input
+          className="form-input"
+          placeholder="cwd"
+          value={cwd}
+          onChange={e => { setCwd(e.target.value); setOpen(true) }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setTimeout(() => setOpen(false), 120)}
+          onKeyDown={onCwdKey}
+          spellCheck={false}
+          autoComplete="off"
+        />
+        {open && matches.length > 0 && (
+          <ul className="cwd-suggestions" ref={listRef}>
+            {matches.map((m, i) => (
+              <li
+                key={m}
+                className={i === sel ? 'active' : ''}
+                onMouseDown={e => { e.preventDefault(); accept(m) }}
+                onMouseEnter={() => setSel(i)}
+              >
+                {m}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       <div className="form-actions">
         <button className="btn-primary" onClick={submit}>create</button>
         <button className="btn-ghost" onClick={onCancel}>cancel</button>
@@ -209,6 +274,7 @@ export default function App() {
             <NewSessionForm
               onSubmit={createSession}
               onCancel={() => setShowForm(false)}
+              token={token}
             />
           ) : (
             <button className="new-session-btn" onClick={() => setShowForm(true)}>

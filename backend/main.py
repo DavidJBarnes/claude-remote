@@ -92,6 +92,57 @@ def delete_session(session_id: str, _: str = Depends(check_token)):
     return {"ok": True}
 
 
+@app.get("/api/fs/complete")
+def fs_complete(prefix: str = "~/", _: str = Depends(check_token)):
+    """Return child directories matching prefix, for cwd tab-completion.
+
+    Trailing slash means "list contents of this dir"; no trailing slash means
+    "list parent dir, filtered by basename" — matches shell convention.
+    Preserves `~` in output when the input used it.
+    """
+    uses_home = prefix.startswith("~")
+    expanded = os.path.expanduser(prefix) if uses_home else prefix
+
+    if prefix.endswith("/"):
+        parent, partial = expanded, ""
+    else:
+        parent = os.path.dirname(expanded) or "/"
+        partial = os.path.basename(expanded)
+
+    if not os.path.isdir(parent):
+        return {"matches": []}
+
+    home = os.path.expanduser("~")
+    show_hidden = partial.startswith(".")
+    matches: list[str] = []
+
+    try:
+        entries = sorted(os.listdir(parent))
+    except OSError:
+        return {"matches": []}
+
+    for name in entries:
+        if not show_hidden and name.startswith("."):
+            continue
+        if not name.startswith(partial):
+            continue
+        full = os.path.join(parent, name)
+        try:
+            if not os.path.isdir(full):
+                continue
+        except OSError:
+            continue
+        if uses_home and (full == home or full.startswith(home + "/")):
+            display = "~" + full[len(home):]
+        else:
+            display = full
+        matches.append(display + "/")
+        if len(matches) >= 50:
+            break
+
+    return {"matches": matches}
+
+
 # ── WebSocket PTY relay ───────────────────────────────────────────────────────
 
 @app.websocket("/ws/sessions/{session_id}")
