@@ -43,6 +43,13 @@ export default function Terminal({ session, token }) {
   const fitRef       = useRef(null)
   const wsRef        = useRef(null)
   const [status, setStatus] = useState('connecting')
+  const [cwd, setCwd] = useState(session.cwd)
+
+  // Update browser tab title with session name and current directory
+  useEffect(() => {
+    document.title = `${session.name} — ${cwd}`
+    return () => { document.title = 'claude-remote' }
+  }, [session.name, cwd])
 
   useEffect(() => {
     const container = containerRef.current
@@ -66,6 +73,19 @@ export default function Terminal({ session, token }) {
     term.loadAddon(fitAddon)
     term.loadAddon(linksAddon)
     term.open(container)
+
+    // Track shell working directory via OSC 7 escape sequences
+    // (bash/zsh emit these on cd when PROMPT_COMMAND is configured)
+    term.parser.registerOscHandler(7, (data) => {
+      try {
+        const url = new URL(data)
+        setCwd(decodeURIComponent(url.pathname))
+      } catch {
+        setCwd(data)
+      }
+      return true
+    })
+
     // Small delay so the container has its final dimensions
     requestAnimationFrame(() => fitAddon.fit())
 
@@ -141,7 +161,7 @@ export default function Terminal({ session, token }) {
       <div className="terminal-bar">
         <div className="terminal-bar-left">
           <span className="terminal-session-name">{session.name}</span>
-          <span className="terminal-cwd">{session.cwd}</span>
+          <span className="terminal-cwd">{cwd}</span>
         </div>
         <span className="terminal-status" style={{ color: statusColor }}>
           ● {status}

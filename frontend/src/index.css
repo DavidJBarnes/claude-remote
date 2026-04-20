@@ -12,23 +12,23 @@ html, body, #root {
 body {
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
   background: #090C12;
-  color: #8BA0BE;
+  color: #B0C4DE;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1C2535;
+  background: #3A5068;
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2A3D55;
+  background: #5A7A95;
 }
 
 button {

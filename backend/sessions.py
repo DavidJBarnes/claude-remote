@@ -33,6 +33,10 @@ class SessionManager:
             ["tmux", "new-session", "-d", "-s", tmux_name, "-c", expanded],
             check=True,
         )
+        subprocess.run(
+            ["tmux", "set-option", "-t", tmux_name, "mouse", "on"],
+            check=True,
+        )
 
         session = Session(
             id=session_id,

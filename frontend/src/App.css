@@ -10,10 +10,10 @@
 /* ── Sidebar ─────────────────────────────────────────────────────────────── */
 
 .sidebar {
-  width: 230px;
-  min-width: 230px;
+  width: 240px;
+  min-width: 240px;
   background: #0D1117;
-  border-right: 1px solid #161E2A;
+  border-right: 2px solid #2A3D55;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -21,7 +21,7 @@
 
 .sidebar-header {
   padding: 18px 14px 14px;
-  border-bottom: 1px solid #161E2A;
+  border-bottom: 1px solid #2A3D55;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,9 +29,9 @@
 }
 
 .node-name {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  color: #C8D8F0;
+  color: #E0E8F4;
   letter-spacing: 0.04em;
   white-space: nowrap;
   overflow: hidden;
@@ -39,9 +39,9 @@
 }
 
 .node-indicator {
-  width: 6px;
-  height: 6px;
-  min-width: 6px;
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
   border-radius: 50%;
   background: #30C890;
   box-shadow: 0 0 7px rgba(48, 200, 144, 0.7);
@@ -55,10 +55,10 @@
 
 .sidebar-section-label {
   padding: 14px 14px 5px;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #232E3E;
+  color: #7A8FA6;
   font-weight: 700;
 }
 
@@ -74,23 +74,23 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 8px;
+  padding: 8px 10px;
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.12s;
-  margin-bottom: 1px;
+  margin-bottom: 2px;
   border: 1px solid transparent;
 }
 
 .session-item:hover {
-  background: #141C28;
+  background: #182030;
 }
 
 .session-item.active {
-  background: #141C28;
-  border-color: #1E2A3A;
-  border-left: 2px solid #F0A030;
-  padding-left: 6px;
+  background: #182030;
+  border-color: #2A3D55;
+  border-left: 3px solid #F0A030;
+  padding-left: 8px;
 }
 
 .session-info {
@@ -99,21 +99,21 @@
 }
 
 .session-name {
-  font-size: 11.5px;
+  font-size: 13px;
   font-weight: 500;
-  color: #A8C0D8;
+  color: #C0D8F0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .session-item.active .session-name {
-  color: #C8D8F0;
+  color: #E8F0FF;
 }
 
 .session-cwd {
-  font-size: 9.5px;
-  color: #2A3D55;
+  font-size: 11px;
+  color: #7A90A8;
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -123,8 +123,8 @@
 .session-kill {
   background: none;
   border: none;
-  color: #2A3D55;
-  font-size: 10px;
+  color: #7A90A8;
+  font-size: 12px;
   padding: 2px 4px;
   border-radius: 3px;
   opacity: 0;
@@ -138,14 +138,14 @@
 }
 
 .session-kill:hover {
-  color: #D04848;
-  background: rgba(208, 72, 72, 0.12);
+  color: #E06060;
+  background: rgba(208, 72, 72, 0.15);
 }
 
 .sessions-empty {
   padding: 20px 8px;
-  font-size: 10px;
-  color: #1E2A3A;
+  font-size: 12px;
+  color: #6B7D95;
   text-align: center;
   letter-spacing: 0.05em;
 }
@@ -154,16 +154,16 @@
 
 .sidebar-footer {
   padding: 10px;
-  border-top: 1px solid #161E2A;
+  border-top: 1px solid #2A3D55;
 }
 
 .new-session-btn {
   width: 100%;
   background: none;
-  border: 1px dashed #1A2535;
-  color: #2A3D55;
-  font-size: 10.5px;
-  padding: 8px;
+  border: 1px dashed #3A5068;
+  color: #8090A8;
+  font-size: 12px;
+  padding: 9px;
   border-radius: 4px;
   letter-spacing: 0.06em;
   transition: border-color 0.15s, color 0.15s;
@@ -182,10 +182,10 @@
 
 .form-input {
   background: #090C12;
-  border: 1px solid #161E2A;
-  color: #C8D8F0;
-  font-size: 11px;
-  padding: 6px 8px;
+  border: 1px solid #2A3D55;
+  color: #E0E8F4;
+  font-size: 13px;
+  padding: 7px 9px;
   border-radius: 3px;
   outline: none;
   transition: border-color 0.15s;
@@ -197,7 +197,7 @@
 }
 
 .form-input::placeholder {
-  color: #1E2A3A;
+  color: #5A7080;
 }
 
 .form-actions {
@@ -211,9 +211,9 @@
   background: #F0A030;
   border: none;
   color: #090C12;
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 6px 8px;
+  padding: 7px 8px;
   border-radius: 3px;
   letter-spacing: 0.05em;
   transition: background 0.12s;
@@ -225,18 +225,18 @@
 
 .btn-ghost {
   background: none;
-  border: 1px solid #161E2A;
-  color: #2A3D55;
-  font-size: 10.5px;
-  padding: 6px 10px;
+  border: 1px solid #2A3D55;
+  color: #8090A8;
+  font-size: 12px;
+  padding: 7px 10px;
   border-radius: 3px;
   letter-spacing: 0.04em;
   transition: border-color 0.12s, color 0.12s;
 }
 
 .btn-ghost:hover {
-  border-color: #2A3D55;
-  color: #8BA0BE;
+  border-color: #5A7A95;
+  color: #C0D4E8;
 }
 
 /* ── Main area ───────────────────────────────────────────────────────────── */
@@ -262,8 +262,8 @@
 }
 
 .empty-glyph {
-  font-size: 48px;
-  color: #161E2A;
+  font-size: 56px;
+  color: #3A5068;
   animation: blink 1.2s step-start infinite;
   line-height: 1;
 }
@@ -274,14 +274,14 @@
 }
 
 .empty-text {
-  font-size: 11px;
-  color: #2A3D55;
+  font-size: 14px;
+  color: #8090A8;
   letter-spacing: 0.08em;
 }
 
 .empty-hint {
-  font-size: 9.5px;
-  color: #1A2535;
+  font-size: 12px;
+  color: #6B7D95;
   letter-spacing: 0.05em;
 }
 
@@ -295,8 +295,8 @@
 }
 
 .terminal-bar {
-  padding: 7px 14px;
-  border-bottom: 1px solid #161E2A;
+  padding: 8px 14px;
+  border-bottom: 2px solid #2A3D55;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -314,22 +314,22 @@
 }
 
 .terminal-session-name {
-  font-size: 11.5px;
+  font-size: 13px;
   font-weight: 600;
-  color: #C8D8F0;
+  color: #E0E8F4;
   white-space: nowrap;
 }
 
 .terminal-cwd {
-  font-size: 10px;
-  color: #2A3D55;
+  font-size: 12px;
+  color: #8090A8;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .terminal-status {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.04em;
   white-space: nowrap;
   flex-shrink: 0;
@@ -373,17 +373,17 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 280px;
+  width: 300px;
   padding: 32px;
   background: #0D1117;
-  border: 1px solid #161E2A;
+  border: 2px solid #2A3D55;
   border-radius: 6px;
 }
 
 .login-logo {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
-  color: #C8D8F0;
+  color: #E0E8F4;
   letter-spacing: -0.02em;
   margin-bottom: 2px;
 }
@@ -393,18 +393,18 @@
 }
 
 .login-sub {
-  font-size: 10px;
-  color: #2A3D55;
+  font-size: 12px;
+  color: #8090A8;
   letter-spacing: 0.04em;
   margin-bottom: 8px;
 }
 
 .login-input {
   background: #090C12;
-  border: 1px solid #161E2A;
-  color: #C8D8F0;
-  font-size: 13px;
-  padding: 9px 12px;
+  border: 1px solid #2A3D55;
+  color: #E0E8F4;
+  font-size: 15px;
+  padding: 10px 12px;
   border-radius: 4px;
   outline: none;
   transition: border-color 0.15s;
@@ -415,7 +415,7 @@
 }
 
 .login-input::placeholder {
-  color: #1E2A3A;
+  color: #5A7080;
 }
 
 .login-input:disabled {
@@ -423,8 +423,8 @@
 }
 
 .login-err {
-  font-size: 10px;
-  color: #D04848;
+  font-size: 12px;
+  color: #E06060;
   letter-spacing: 0.04em;
 }
 
@@ -432,8 +432,8 @@
   background: none;
   border: 1px solid #F0A030;
   color: #F0A030;
-  font-size: 11.5px;
-  padding: 9px;
+  font-size: 14px;
+  padding: 10px;
   border-radius: 4px;
   letter-spacing: 0.06em;
   transition: background 0.15s, color 0.15s;
